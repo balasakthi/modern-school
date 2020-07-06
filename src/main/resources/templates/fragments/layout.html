@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:fragment="layout(title, links, content, scripts)">
+
+<head>
+<meta charset="UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+
+<meta content="Admin Dashboard" name="description" />
+<meta content="ThemeDesign" name="author" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>School Management :: a demo web application</title>
+
+<link rel="shortcut icon" th:href="@{/assets/images/favicon.ico}">
+
+
+<!-- default styles -->
+<link th:href="@{assets/css/bootstrap.min.css}" rel="stylesheet"
+	type="text/css">
+<link th:href="@{assets/css/icons.css}" rel="stylesheet" type="text/css">
+<link th:href="@{assets/css/style.css}" rel="stylesheet" type="text/css">
+
+
+<!-- placeholder for additional links -->
+<th:block th:replace="${links}" />
+
+
+</head>
+
+<body class="fixed-left">
+
+	<!-- Loader -->
+	<div id="preloader">
+		<div id="status">
+			<div class="spinner"></div>
+		</div>
+	</div>
+
+
+	<!-- Begin page -->
+	<div id="wrapper">
+
+		<!-- ========== Left Sidebar Start ========== -->
+		<div class="left side-menu">
+			<button type="button"
+				class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect">
+				<i class="ion-close"></i>
+			</button>
+
+			<!-- LOGO -->
+			<div class="topbar-left">
+				<div class="text-center">
+					<!--<a href="index.html" class="logo">Admiry</a>-->
+					<a href="index.html" class="logo"><img
+						src="assets/images/logo.png" height="42" alt="logo"></a>
+				</div>
+			</div>
+
+			<div class="sidebar-inner slimscrollleft">
+
+
+				<div id="sidebar-menu">
+
+					<ul th:remove="all">
+						<li th:fragment="menuItem (link,title,glyph,text)"><a
+							class="waves-effect" th:href="@{__${link}__}" th:title="${title}">
+								<i th:class="'mdi mdi-'+${glyph}"></i> <span th:text="${text}"></span>
+						</a></li>
+					</ul>
+					<ul>
+
+						<li
+							th:replace="::menuItem ('/','dashboard page','view-dashboard','Dashboard')">
+						</li>
+
+						<li
+							th:replace="::menuItem ('/students-list','students page','account','Students')">
+						</li>
+						<li
+							th:replace="::menuItem ('/payments','payment page','cash','Payments')">
+						</li>
+
+					</ul>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<!-- end sidebarinner -->
+		</div>
+		<!-- Left Sidebar End -->
+
+		<!-- Start right Content here -->
+
+		<div class="content-page">
+			<!-- Start content -->
+			<div class="content">
+
+				<!-- Top Bar Start -->
+				<div class="topbar">
+
+					<nav class="navbar-custom">
+
+						<ul class="list-inline menu-left mb-0">
+							<li class="list-inline-item">
+								<button type="button"
+									class="button-menu-mobile open-left waves-effect">
+									<i class="ion-navicon"></i>
+								</button>
+							</li>
+							<li class="hide-phone list-inline-item app-search">
+								<h3 class="page-title" th:include="${title}"></h3>
+							</li>
+						</ul>
+
+
+						<div class="clearfix"></div>
+
+					</nav>
+
+				</div>
+				<!-- Top Bar End -->
+
+				<div class="page-content-wrapper ">
+
+					<div class="container-fluid">
+
+
+						<section th:replace="${content}"></section>
+
+
+
+					</div>
+					<!-- container-fluid -->
+
+
+				</div>
+				<!-- Page content Wrapper -->
+
+			</div>
+			<!-- content -->
+
+			<footer class="footer"> © 2020 SMBM Schools. </footer>
+		</div>
+		<!-- End Right content here -->
+
+	</div>
+	<!-- END wrapper -->
+
+
+	<!-- default scripts -->
+
+	<!-- jQuery  -->
+	<script th:src="@{assets/js/jquery.min.js}"></script>
+	<script th:src="@{assets/js/tether.min.js}"></script>
+	<!-- Tether for Bootstrap -->
+	<script th:src="@{assets/js/popper.min.js}"></script>
+	<script th:src="@{assets/js/bootstrap.min.js}"></script>
+	<script th:src="@{assets/js/modernizr.min.js}"></script>
+	<script th:src="@{assets/js/detect.js}"></script>
+	<script th:src="@{assets/js/fastclick.js}"></script>
+	<script th:src="@{assets/js/jquery.slimscroll.js}"></script>
+	<script th:src="@{assets/js/jquery.blockUI.js}"></script>
+	<script th:src="@{assets/js/waves.js}"></script>
+	<script th:src="@{assets/js/jquery.nicescroll.js}"></script>
+	<script th:src="@{assets/js/jquery.scrollTo.min.js}"></script>
+	
+	<!-- App js -->
+	<script th:src="@{assets/js/app.js}"></script>
+	
+	<!-- placeholder for additional scripts -->
+	<th:block th:replace="${scripts}" />
+
+
+</body>
+</html>
+

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+
+
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script})">
+
+
+<head>
+
+<title>Students</title>
+
+
+<link></link>
+</head>
+
+
+<body>
+
+	<section>
+
+		<div class="row">
+
+			<div class="col-lg-12">
+				<div class="card m-b-20">
+					<div class="card-body">
+
+						<h4 class="mt-0 header-title">Instalment</h4>
+
+						<form th:action="@{/savePayment}" th:object="${payment}"
+							method="POST">
+
+							<div class="form-group">
+								<!-- Add hidden form field to handle update -->
+								<input type="hidden" th:field="*{id}" />
+							</div>
+
+							<div class="form-group">
+								<label>Student</label> <select th:field="*{academic}"
+									class="form-control" id="select2-1" required>
+
+									<option th:each="academic:${academic}"
+										th:value="${academic.id}"
+										th:text="${academic.student.fullName}"></option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label>Amount</label>
+								<div>
+									<input data-parsley-type="number" data-parsley-min="10"
+										data-parsley-maxlength="6" type="text" class="form-control"
+										required placeholder="Enter the paid amount"
+										th:field="*{amount}" />
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label>Pay Date</label> <input type="text" class="form-control"
+									placeholder="yyyy-mm-dd" id="datepicker-autoclose"
+									th:field="*{payDate}" required />
+
+							</div>
+
+
+							<div class="form-group">
+								<label>Bill No</label>
+								<div>
+									<input type="text" class="form-control" data-parsley-min="1"
+										required placeholder="Enter the bill number"
+										th:field="*{billNo}" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label>Referece</label>
+								<div>
+									<textarea class="form-control" rows="5"
+										placeholder="Enter the reference" th:field="*{reference}"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<button type="submit"
+										class="btn btn-primary waves-effect waves-light">
+										Submit</button>
+									<a class="btn btn-secondary" th:href="@{/students-list}"
+										role="button">Cancel</a>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+			<!-- end col -->
+
+
+
+
+		</div>
+		<!-- end row -->
+
+	</section>
+	<script></script>
+
+</body>
+
+</html>

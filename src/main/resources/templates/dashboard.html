@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script})">
+
+<head>
+<title>Dashboard</title>
+
+<!-- C3 charts css -->
+<link th:href="@{assets/plugins/c3/c3.min.css}" rel="stylesheet"
+	type="text/css" />
+
+</head>
+
+
+<body class="fixed-left">
+
+	<section>
+
+		<div class="row">
+			<div class="col-md-6 col-lg-6 col-xl-3">
+				<div class="mini-stat clearfix bg-primary">
+					<span class="mini-stat-icon"><i class="mdi mdi-account"></i></span>
+					<div class="mini-stat-info text-right text-white">
+						<span class="counter"
+							th:text="${academicPanel.getTotalStudents()}"></span> Students
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-6 col-xl-3">
+				<div class="mini-stat clearfix bg-primary">
+					<span class="mini-stat-icon"><i class="mdi mdi-school"></i></span>
+					<div class="mini-stat-info text-right text-white">
+						<span class="counter"
+							th:text="${academicPanel.getTotalAdmission()}+${academicPanel.getTotalOldHigherSecondary()}"></span>
+						Admissions
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-6 col-xl-3">
+				<div class="mini-stat clearfix bg-primary">
+					<span class="mini-stat-icon"><i class="fa fa-rupee"></i></span>
+					<div class="mini-stat-info text-right text-white">
+						<span class="counter"
+							th:text="${#numbers.formatDecimal(totalPaidFee,0,'COMMA',0,'POINT')}"></span>
+						New Users
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-6 col-xl-3">
+				<div class="mini-stat clearfix bg-primary">
+					<span class="mini-stat-icon"><i
+						class="mdi mdi-calendar-today"></i> </span>
+					<div class="mini-stat-info text-right text-white">
+						<span class="counter"
+							th:text="${#temporals.format(todaysDate, 'dd MMMM yyyy', new java.util.Locale('ta', 'IN'))}"></span>
+						Today's Date
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+
+			<div class="col-xl-6">
+				<div class="card m-b-20">
+					<div class="card-body">
+						<h4 class="mt-0 header-title">New Admissions</h4>
+
+						<ul class="list-inline widget-chart m-t-20 text-center">
+							<li>
+								<h4 class="">
+									<b th:text="${academicPanel.getTotalNewPrePrimary()}"></b>
+								</h4>
+								<p class="text-muted m-b-0">Pre Primary</p>
+							</li>
+							<li>
+								<h4 class="">
+									<b th:text="${academicPanel.getTotalNewPrimary()}"></b>
+								</h4>
+								<p class="text-muted m-b-0">Primary</p>
+							</li>
+							<li>
+								<h4 class="">
+									<b th:text="${academicPanel.getTotalNewSecondary()}"></b>
+								</h4>
+								<p class="text-muted m-b-0">Secondary</p>
+							</li>
+						</ul>
+						<div id="donut-chart"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-6">
+				<div class="card m-b-20">
+					<div class="card-body">
+						<h4 class="mt-0 header-title">Higher Secondary</h4>
+
+						<ul class="list-inline widget-chart m-t-20 text-center">
+							<li>
+								<h4 class="">
+									<b th:text="${academicPanel.getTotalNewHigherSecondary()}"></b>
+								</h4>
+								<p class="text-muted m-b-0">Others</p>
+							</li>
+							<li>
+								<h4 class="">
+									<b th:text="${academicPanel.getTotalOldHigherSecondary()}"></b>
+								</h4>
+								<p class="text-muted m-b-0">SMBM</p>
+							</li>
+						</ul>
+
+						<div id="chart"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- end row -->
+
+
+		<div class="row">
+
+			<div class="col-12">
+				<div class="card m-b-20">
+					<div class="card-body">
+						<h4 class="mt-0 m-b-15 header-title">Recent Payments</h4>
+						<div class="table-responsive">
+							<table class="table table-hover m-b-0">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Amount</th>
+										<th>Bill No.</th>
+										<th>Pay date</th>
+
+									</tr>
+
+								</thead>
+								<tbody>
+									<tr th:each="tempPayment: ${recentPayments}">
+
+										<td><th:block
+												th:if="${tempPayment.academic.type eq 'OLD'}">
+												<span th:text="${tempPayment.academic.student.fullName}">
+												</span>
+											</th:block> <th:block th:if="${tempPayment.academic.type eq 'NEW'}">
+												<span th:text="${tempPayment.academic.student.fullName}"></span>
+												<div class="badge badge-pill badge-primary">New</div>
+											</th:block> <th:block th:if="${tempPayment.academic.type eq 'MATRIC'}">
+												<span th:text="${tempPayment.academic.student.fullName}"></span>
+												<div class="badge badge-pill badge-info">Matric</div>
+											</th:block></td>
+
+
+
+										<td>&#8377; <span
+											th:text="${#numbers.formatDecimal(tempPayment.amount,0, 'COMMA',0, 'POINT')}"></span></td>
+
+										<td th:text="${tempPayment.billNo}"></td>
+
+										<td
+											th:text="${#dates.format(tempPayment.payDate, 'dd-MM-yyyy')}" />
+
+
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- end row -->
+
+		<div id="chart"></div>
+
+
+
+
+
+	</section>
+
+	<!--C3 Chart-->
+	<script type="text/javascript" th:src="@{assets/plugins/d3/d3.min.js}"></script>
+	<script type="text/javascript" th:src="@{assets/plugins/c3/c3.min.js}"></script>
+
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		var chart = c3
+				.generate({
+					bindto : '#donut-chart',
+					data : {
+						columns : [
+								[ 'Pre Primary', /*[[${academicPanel.getTotalNewPrePrimary()}]]*/],
+								[ 'Primary', /*[[${academicPanel.getTotalNewPrimary()}]]*/],
+								[ 'Secondary',/*[[${academicPanel.getTotalNewSecondary()}]]*/],
+								[ 'Higher Secondary',/*[[${academicPanel.getTotalNewHigherSecondary()}+${academicPanel.getTotalOldHigherSecondary()}]]*/] ],
+						type : 'donut'
+					},
+					donut : {
+						title : "Students",
+						width : 30,
+						label : {
+							show : false
+						}
+					},
+					color : {
+						pattern : [ "#f1a1a1", "#ebeff2", "#e54749", "#eb7475" ]
+					}
+				});
+
+
+		//generating chart 
+		var chart = c3
+				.generate({
+					bindto : '#chart',
+					data : {
+						columns : [
+								[ 'Integrated', /*[[${higherSecondary.getTotalIntegratedA1()}]]*/
+								, /*[[${higherSecondary.getTotalIntegratedB1()}]]*/
+								,/*[[${higherSecondary.getTotalIntegratedB2()}]]*/
+								,/*[[${higherSecondary.getTotalIntegratedC1()}]]*/
+								,/*[[${higherSecondary.getTotalIntegratedC2()}]]*/],
+								[ 'Non-Integrated', /*[[${higherSecondary.getTotalNonIntegratedA1()}]]*/
+								,/*[[${higherSecondary.getTotalNonIntegratedB1()}]]*/
+								,/*[[${higherSecondary.getTotalNonIntegratedB2()}]]*/
+								,/*[[${higherSecondary.getTotalNonIntegratedC1()}]]*/
+								,/*[[${higherSecondary.getTotalNonIntegratedC2()}]]*/] ]
+					},
+					color : {
+						pattern : [ "#e54749", "#f1a1a1", "#ebeff2", "#eb7475" ]
+					},
+					axis : {
+						x : {
+							type : 'category',
+							categories : [ 'XI A1', 'XI B1', 'XI B2', 'XI C1',
+									'XI C2' ]
+						}
+					}
+				});
+
+
+		/*]]>*/
+	</script>
+
+</body>
+
+</html>
