@@ -50,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public Long sumAllPaidFee() {
+	public Double sumAllPaidFee() {
 		return paymentRepository.sumAllPaidFee();
 	}
 

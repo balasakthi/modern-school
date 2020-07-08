@@ -1,11 +1,11 @@
 package com.balsa.school.bean;
 
-public class AcademicStrength {
+public class AdmissionStrength {
 
 	Integer totalStudents, totalAdmission, totalMatric, totalNewPrePrimary, totalNewPrimary, totalNewSecondary,
 			totalNewHigherSecondary, totalOldHigherSecondary;
 
-	public AcademicStrength() {
+	public AdmissionStrength() {
 	}
 
 	public Integer getTotalAdmission() {

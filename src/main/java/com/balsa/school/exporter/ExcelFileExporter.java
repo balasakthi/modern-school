@@ -44,7 +44,7 @@ public class ExcelFileExporter {
 	        	Row dataRow = sheet.createRow(i + 1);
 	        	dataRow.createCell(0).setCellValue(academic.get(i).getStudent().getFullName());
 	        	dataRow.createCell(1).setCellValue(academic.get(i).getGrade().getTitle());
-	        	dataRow.createCell(2).setCellValue(academic.get(i).getType());
+	        	dataRow.createCell(2).setCellValue(academic.get(i).getCategory().name());
 	        }
 	
 	        // Making size of column auto resize to fit with data

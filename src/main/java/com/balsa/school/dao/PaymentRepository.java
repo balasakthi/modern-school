@@ -17,7 +17,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
 	// gets the total fee paid by all the students
 	@Query(value = "SELECT sum(amount) from payment pay", nativeQuery = true)
-	Long sumAllPaidFee();
+	Double sumAllPaidFee();
 
 	// list the payments by the recent date
 	@Query(value = "SELECT * from payment WHERE pay_date = (SELECT MAX(pay_date) from payment)", nativeQuery = true)

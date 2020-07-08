@@ -3,8 +3,11 @@ package com.balsa.school.service;
 import java.util.List;
 
 import com.balsa.school.entity.Academic;
+import com.balsa.school.entity.Student;
 
 public interface AcademicService {
+	
+	public void save(Academic theAcademic);
 
 	public Integer getTotalNewAdmission();
 

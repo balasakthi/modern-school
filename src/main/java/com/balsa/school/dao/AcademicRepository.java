@@ -13,26 +13,26 @@ public interface AcademicRepository extends JpaRepository<Academic, Integer> {
 
 	List<Academic> findByGradeIn(List<String> grades);
 	
-	@Query(value = "SELECT count(id) FROM academic WHERE type IN ('MATRIC')", nativeQuery = true)
+	@Query(value = "SELECT count(id) FROM academic WHERE category IN ('MATRIC')", nativeQuery = true)
 	Integer getTotalMatric();
 
-	@Query(value = "SELECT count(id) FROM academic WHERE type IN ('NEW','MATRIC')", nativeQuery = true)
+	@Query(value = "SELECT count(id) FROM academic WHERE category IN ('NEW','MATRIC')", nativeQuery = true)
 	Integer getTotalNewAdmission();
 
 	// Queries to get the total new admissions
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (1,2,3) and type IN ('NEW', 'Matric')", nativeQuery = true)
+	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (1,2,3) and category IN ('NEW', 'MATRIC')", nativeQuery = true)
 	Integer getTotalNewPrePrimary();
 
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 4 AND 8 and type IN ('NEW', 'Matric')", nativeQuery = true)
+	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 4 AND 8 and category IN ('NEW', 'MATRIC')", nativeQuery = true)
 	Integer getTotalNewPrimary();
 
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 9 AND 13 and type IN ('NEW', 'Matric')", nativeQuery = true)
+	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 9 AND 13 and category IN ('NEW', 'MATRIC')", nativeQuery = true)
 	Integer getTotalNewSecondary();
 
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 14 AND 23 and type IN ('NEW')", nativeQuery = true)
+	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 14 AND 23 and category IN ('NEW')", nativeQuery = true)
 	Integer getTotalNewHigherSecondary();
 
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 14 AND 23 and type IN ('OLD')", nativeQuery = true)
+	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 14 AND 23 and category IN ('OLD')", nativeQuery = true)
 	Integer getTotalOldHigherSecondary();
 
 	// Queries to get strength of a integrated higher secondary class

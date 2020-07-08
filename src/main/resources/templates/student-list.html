@@ -34,29 +34,16 @@
 				<div class="card m-b-20">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-md-8">
+							<div class="col-md-10">
 
 								<h4 class="mt-0 header-title">List of students</h4>
 								<p class="text-muted m-b-30 font-14">2020- 2021</p>
 							</div>
 
-							<div class="col-md-4">
-								<a class="btn btn-secondary waves-effect waves-light"
-									th:href="@{/export}" role="button"><i
-									class="mdi mdi-file-import"></i></a> <a
-									class="btn btn-secondary waves-effect waves-light"
-									th:href="@{/export}" role="button"><i
-									class="mdi mdi-file-import"></i></a>
-									
+							<div class="col-md-2">
 								<div class="btn-group" role="group" aria-label="Basic example">
-									<a class="btn btn-secondary" th:href="@{/export}">eeLeft</a>
-									<a class="btn btn-secondary">Middle</a>
-								</div>
-
-								<div class="btn-group" role="group" aria-label="Basic example">
-									<button type="button" class="btn btn-secondary">Left</button>
-									<button type="button" class="btn btn-secondary">Middle</button>
-									<button type="button" class="btn btn-secondary">Right</button>
+									<a class="btn btn-primary waves-effect waves-light"  th:href="@{/student-form}">Add</a>
+									<a class="btn btn-secondary waves-effect waves-light" th:href="@{/export}">Export</a>
 								</div>
 							</div>
 						</div>
@@ -76,15 +63,15 @@
 							<tbody>
 								<tr th:each="tempStudent: ${studentList}">
 
-									<td><th:block th:if="${tempStudent.type eq 'OLD'}">
+									<td><th:block th:if="${tempStudent.category.name()=='OLD'}">
 											<span th:text="${tempStudent.student.fullName}"> </span>
-										</th:block> <th:block th:if="${tempStudent.type eq 'NEW'}">
+										</th:block> <th:block th:if="${tempStudent.category.name()=='NEW'}">
 											<span th:text="${tempStudent.student.fullName}"></span>
 											<div class="badge badge-pill badge-primary">New</div>
-										</th:block> <th:block th:if="${tempStudent.type eq 'MATRIC'}">
+										</th:block> <th:block th:if="${tempStudent.category.name()== 'MATRIC'}">
 											<span th:text="${tempStudent.student.fullName}"></span>
 											<div class="badge badge-pill badge-info">Matric</div>
-										</th:block> <th:block th:if="${tempStudent.type eq 'REFUND'}">
+										</th:block> <th:block th:if="${tempStudent.category.name()== 'REFUND'}">
 											<span th:text="${tempStudent.student.fullName}"></span>
 											<div class="badge badge-pill badge-danger">Refund</div>
 										</th:block></td>

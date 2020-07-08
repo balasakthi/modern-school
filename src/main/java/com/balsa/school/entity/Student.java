@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,6 +24,7 @@ public class Student {
 	@Column(name = "id")
 	private int id;
 
+	@NotEmpty
 	@Column(name = "full_name")
 	private String fullName;
 

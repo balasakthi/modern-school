@@ -139,4 +139,10 @@ public class AcademicServiceImpl implements AcademicService {
 		return academicRepository.getTotalNonIntegratedC2();
 	}
 
+	@Override
+	public void save(Academic theAcademic) {
+
+		academicRepository.save(theAcademic);
+	}
+
 }

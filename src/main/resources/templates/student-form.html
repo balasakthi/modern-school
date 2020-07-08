@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+
+
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script})">
+
+
+<head>
+
+<title>Students</title>
+
+
+<link></link>
+</head>
+
+
+<body>
+
+	<section>
+
+		<div class="row">
+
+			<div class="col-lg-12">
+				<div class="card m-b-20">
+					<div class="card-body">
+
+						<h4 class="mt-0 header-title">Student</h4>
+
+						<form th:action="@{/save-student}" th:object="${academic}"
+							method="POST">
+							
+							
+							<div class="form-group">
+								<!-- Add hidden form field to handle update -->
+								<input type="hidden" th:field="*{id}" />
+							</div>
+
+							<div class="form-group row">
+								<label for="name-text-input" class="col-sm-2 col-form-label">Full
+									Name</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text"
+										placeholder="Enter the student name" id="name-text-input"
+										th:field="*{student.fullName}" required>
+
+									<div class="input-group text-danger"
+										th:if="${#fields.hasErrors('student.fullName')}"
+										th:errors="*{student.fullName}"></div>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="grade-select-input" class="col-sm-2 col-form-label">Grade</label>
+								<div class="col-sm-10">
+									<select th:field=*{grade} class="form-control" required>
+										<option value="">Choose...</option>
+										<option th:each="grade:${gradeList}" th:value="${grade.id}"
+											th:text="${grade.title}"></option>
+									</select>
+
+									<div class="input-group text-danger"
+										th:if="${#fields.hasErrors('grade')}"
+										th:errors="*{grade}"></div>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+                           <label class="col-md-2 col-form-label">Inline radios</label>
+                           <div class="col-md-10">
+                              <label class="c-radio">
+                                 <input id="inlineradio1" type="radio" name="i-radio" value="option1" checked>
+                                New Admission</label>
+                              <label class="c-radio">
+                                 <input id="inlineradio2" type="radio" name="i-radio" value="option2">
+                                 From Matric</label>
+                              <label class="c-radio">
+                                 <input id="inlineradio3" type="radio" name="i-radio" value="option3">
+                                 Old Student</label>
+                           </div>
+                        </div>
+
+
+							<div class="form-group">
+								<div>
+									<button type="submit"
+										class="btn btn-primary waves-effect waves-light">
+										Submit</button>
+									<a class="btn btn-secondary" th:href="@{/students-list}"
+										role="button">Cancel</a>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+			<!-- end col -->
+
+
+
+
+		</div>
+		<!-- end row -->
+
+	</section>
+	<!-- Parsley js -->
+	<script type="text/javascript"
+		th:src="@{assets/plugins/parsleyjs/parsley.min.js}"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('form').parsley();
+		});
+	</script>
+
+</body>
+
+</html>

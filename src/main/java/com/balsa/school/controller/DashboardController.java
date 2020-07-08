@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.balsa.school.bean.AcademicStrength;
+import com.balsa.school.bean.AdmissionStrength;
 import com.balsa.school.bean.HigherSecondaryStrength;
 import com.balsa.school.entity.Payment;
 import com.balsa.school.service.AcademicService;
@@ -19,12 +19,12 @@ public class DashboardController {
 
 	private AcademicService academicService;
 	private PaymentService paymentService;
-	private AcademicStrength academicStrength;
+	private AdmissionStrength admissionStrength;
 	private HigherSecondaryStrength higherSecondaryStrength;
 
 	private Logger logger = Logger.getLogger(getClass().getName());
 
-	private Long totalPaidFee;
+	private Double totalPaidFee;
 
 	public DashboardController(AcademicService academicService, PaymentService paymentService) {
 		this.academicService = academicService;
@@ -34,15 +34,15 @@ public class DashboardController {
 
 	// method to find the total new admission
 	private void findAcademicStrength() {
-		academicStrength = new AcademicStrength();
-		academicStrength.setTotalAdmission(academicService.getTotalNewAdmission());
-		academicStrength.setTotalStudents(academicService.getTotalStudents());
-		academicStrength.setTotalMatric(academicService.getTotalMatric());
-		academicStrength.setTotalNewPrePrimary(academicService.getTotalNewPrePrimary());
-		academicStrength.setTotalNewPrimary(academicService.getTotalNewPrimary());
-		academicStrength.setTotalNewSecondary(academicService.getTotalNewSecondary());
-		academicStrength.setTotalNewHigherSecondary(academicService.getTotalNewHigherSecondary());
-		academicStrength.setTotalOldHigherSecondary(academicService.getTotalOldHigherSecondary());
+		admissionStrength = new AdmissionStrength();
+		admissionStrength.setTotalAdmission(academicService.getTotalNewAdmission());
+		admissionStrength.setTotalStudents(academicService.getTotalStudents());
+		admissionStrength.setTotalMatric(academicService.getTotalMatric());
+		admissionStrength.setTotalNewPrePrimary(academicService.getTotalNewPrePrimary());
+		admissionStrength.setTotalNewPrimary(academicService.getTotalNewPrimary());
+		admissionStrength.setTotalNewSecondary(academicService.getTotalNewSecondary());
+		admissionStrength.setTotalNewHigherSecondary(academicService.getTotalNewHigherSecondary());
+		admissionStrength.setTotalOldHigherSecondary(academicService.getTotalOldHigherSecondary());
 	}
 
 	// method to find the higher secondary strength
@@ -77,7 +77,7 @@ public class DashboardController {
 		List<Payment> theRecentPayments = paymentService.findByMaxPayDate();
 
 		theModel.addAttribute("recentPayments", theRecentPayments);
-		theModel.addAttribute("academicPanel", academicStrength);
+		theModel.addAttribute("admissionStrength", admissionStrength);
 		theModel.addAttribute("higherSecondary",higherSecondaryStrength);
 		theModel.addAttribute("totalPaidFee", totalPaidFee);
 		theModel.addAttribute("todaysDate", LocalDateTime.now());

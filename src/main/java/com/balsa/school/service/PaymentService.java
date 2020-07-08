@@ -20,7 +20,7 @@ public interface PaymentService {
 
 	public Long sumPaidFeeById(int theAcademicId);
 
-	public Long sumAllPaidFee();
+	public Double sumAllPaidFee();
 	
 	public List<Payment> findByPayDate(Date date);
 	

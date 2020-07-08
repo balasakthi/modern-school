@@ -24,7 +24,7 @@
 					<span class="mini-stat-icon"><i class="mdi mdi-account"></i></span>
 					<div class="mini-stat-info text-right text-white">
 						<span class="counter"
-							th:text="${academicPanel.getTotalStudents()}"></span> Students
+							th:text="${admissionStrength.getTotalStudents()}"></span> Students
 					</div>
 				</div>
 			</div>
@@ -33,7 +33,7 @@
 					<span class="mini-stat-icon"><i class="mdi mdi-school"></i></span>
 					<div class="mini-stat-info text-right text-white">
 						<span class="counter"
-							th:text="${academicPanel.getTotalAdmission()}+${academicPanel.getTotalOldHigherSecondary()}"></span>
+							th:text="${admissionStrength.getTotalAdmission()}+${admissionStrength.getTotalOldHigherSecondary()}"></span>
 						Admissions
 					</div>
 				</div>
@@ -72,19 +72,19 @@
 						<ul class="list-inline widget-chart m-t-20 text-center">
 							<li>
 								<h4 class="">
-									<b th:text="${academicPanel.getTotalNewPrePrimary()}"></b>
+									<b th:text="${admissionStrength.getTotalNewPrePrimary()}"></b>
 								</h4>
 								<p class="text-muted m-b-0">Pre Primary</p>
 							</li>
 							<li>
 								<h4 class="">
-									<b th:text="${academicPanel.getTotalNewPrimary()}"></b>
+									<b th:text="${admissionStrength.getTotalNewPrimary()}"></b>
 								</h4>
 								<p class="text-muted m-b-0">Primary</p>
 							</li>
 							<li>
 								<h4 class="">
-									<b th:text="${academicPanel.getTotalNewSecondary()}"></b>
+									<b th:text="${admissionStrength.getTotalNewSecondary()}"></b>
 								</h4>
 								<p class="text-muted m-b-0">Secondary</p>
 							</li>
@@ -102,13 +102,13 @@
 						<ul class="list-inline widget-chart m-t-20 text-center">
 							<li>
 								<h4 class="">
-									<b th:text="${academicPanel.getTotalNewHigherSecondary()}"></b>
+									<b th:text="${admissionStrength.getTotalNewHigherSecondary()}"></b>
 								</h4>
 								<p class="text-muted m-b-0">Others</p>
 							</li>
 							<li>
 								<h4 class="">
-									<b th:text="${academicPanel.getTotalOldHigherSecondary()}"></b>
+									<b th:text="${admissionStrength.getTotalOldHigherSecondary()}"></b>
 								</h4>
 								<p class="text-muted m-b-0">SMBM</p>
 							</li>
@@ -145,13 +145,14 @@
 									<tr th:each="tempPayment: ${recentPayments}">
 
 										<td><th:block
-												th:if="${tempPayment.academic.type eq 'OLD'}">
+												th:if="${tempPayment.academic.category.name()=='OLD'}">
 												<span th:text="${tempPayment.academic.student.fullName}">
 												</span>
-											</th:block> <th:block th:if="${tempPayment.academic.type eq 'NEW'}">
+												
+											</th:block> <th:block th:if="${tempPayment.academic.category.name()== 'NEW'}">
 												<span th:text="${tempPayment.academic.student.fullName}"></span>
 												<div class="badge badge-pill badge-primary">New</div>
-											</th:block> <th:block th:if="${tempPayment.academic.type eq 'MATRIC'}">
+											</th:block> <th:block th:if="${tempPayment.academic.category.name()=='MATRIC'}">
 												<span th:text="${tempPayment.academic.student.fullName}"></span>
 												<div class="badge badge-pill badge-info">Matric</div>
 											</th:block></td>
@@ -200,10 +201,10 @@
 					bindto : '#donut-chart',
 					data : {
 						columns : [
-								[ 'Pre Primary', /*[[${academicPanel.getTotalNewPrePrimary()}]]*/],
-								[ 'Primary', /*[[${academicPanel.getTotalNewPrimary()}]]*/],
-								[ 'Secondary',/*[[${academicPanel.getTotalNewSecondary()}]]*/],
-								[ 'Higher Secondary',/*[[${academicPanel.getTotalNewHigherSecondary()}+${academicPanel.getTotalOldHigherSecondary()}]]*/] ],
+								[ 'Pre Primary', /*[[${admissionStrength.getTotalNewPrePrimary()}]]*/],
+								[ 'Primary', /*[[${admissionStrength.getTotalNewPrimary()}]]*/],
+								[ 'Secondary',/*[[${admissionStrength.getTotalNewSecondary()}]]*/],
+								[ 'Higher Secondary',/*[[${admissionStrength.getTotalNewHigherSecondary()}+${admissionStrength.getTotalOldHigherSecondary()}]]*/] ],
 						type : 'donut'
 					},
 					donut : {

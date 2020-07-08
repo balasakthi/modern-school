@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,8 +27,9 @@ public class Academic {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "type")
-	private String type;
+	@Column(name = "category")
+	@Enumerated(EnumType.STRING)
+	private Category category;
 
 	@Column(name = "active")
 	private Boolean isActive;
@@ -52,12 +55,12 @@ public class Academic {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public Boolean getIsActive() {
