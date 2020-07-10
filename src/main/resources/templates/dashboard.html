@@ -67,7 +67,7 @@
 			<div class="col-xl-6">
 				<div class="card m-b-20">
 					<div class="card-body">
-						<h4 class="mt-0 header-title">New Admissions</h4>
+						<h4 class="mt-0 header-title" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">New Admissions</h4>
 
 						<ul class="list-inline widget-chart m-t-20 text-center">
 							<li>

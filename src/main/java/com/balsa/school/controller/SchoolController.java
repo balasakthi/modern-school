@@ -1,16 +1,20 @@
 package com.balsa.school.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.compress.utils.IOUtils;
-import org.hibernate.boot.archive.scan.spi.ClassDescriptor.Categorization;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,16 +25,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.balsa.school.bean.AdmissionStrength;
 import com.balsa.school.entity.Academic;
 import com.balsa.school.entity.Category;
 import com.balsa.school.entity.Grade;
 import com.balsa.school.entity.Payment;
 import com.balsa.school.entity.Student;
+import com.balsa.school.exporter.ExcelFileExporter;
 import com.balsa.school.service.AcademicService;
 import com.balsa.school.service.GradeService;
 import com.balsa.school.service.PaymentService;
 import com.balsa.school.service.StudentService;
-import com.balsa.school.exporter.ExcelFileExporter;
 
 @Controller
 public class SchoolController {
@@ -43,6 +48,8 @@ public class SchoolController {
 	private GradeService gradeService;
 	private Category category;
 
+	private AdmissionStrength admissionStrength;
+
 	public SchoolController(AcademicService academicService, PaymentService paymentService,
 			StudentService studentService, GradeService gradeService) {
 		this.academicService = academicService;
@@ -51,10 +58,55 @@ public class SchoolController {
 		this.gradeService = gradeService;
 	}
 
+	// method to find the total new admission
+	public void findAcademicStrength() {
+		admissionStrength = new AdmissionStrength();
+		admissionStrength.setTotalAdmission(academicService.getTotalNewAdmission());
+		admissionStrength.setTotalStudents(academicService.getTotalStudents());
+		admissionStrength.setTotalMatric(academicService.getTotalMatric());
+		admissionStrength.setTotalNewPrePrimary(academicService.getTotalNewPrePrimary());
+		admissionStrength.setTotalNewPrimary(academicService.getTotalNewPrimary());
+		admissionStrength.setTotalNewSecondary(academicService.getTotalNewSecondary());
+		admissionStrength.setTotalNewHigherSecondary(academicService.getTotalNewHigherSecondary());
+		admissionStrength.setTotalOldHigherSecondary(academicService.getTotalOldHigherSecondary());
+	}
+
 	@RequestMapping("/students-list")
+	public String listStudents(@RequestParam(name = "pay-date", required = false) String thePayDate, Model theModel)
+			throws ParseException {
+
+		List<Academic> theStudents = null;
+
+		// gets the total new admissions
+		findAcademicStrength();
+
+		if (thePayDate != null) {
+			try {
+				Date payDate = new SimpleDateFormat("yyyy-MM-dd").parse(thePayDate);
+				theStudents = academicService.findByPayDate(payDate);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			theStudents = academicService.findByMaxPayDate();
+		}
+
+		List<Grade> theGrades = gradeService.findAll();
+		theModel.addAttribute("admissionStrength", admissionStrength);
+		theModel.addAttribute("studentList", theStudents);
+		theModel.addAttribute("gradeList", theGrades);
+		return "student-list";
+	}
+
+	@RequestMapping("/students")
 	public String listStudents(Model theModel) {
+		// gets the total new admissions
+		findAcademicStrength();
+
 		List<Academic> theStudents = academicService.findAll();
 		List<Grade> theGrades = gradeService.findAll();
+		theModel.addAttribute("admissionStrength", admissionStrength);
 		theModel.addAttribute("studentList", theStudents);
 		theModel.addAttribute("gradeList", theGrades);
 		return "student-list";
@@ -63,45 +115,22 @@ public class SchoolController {
 	@GetMapping("/student-form")
 	public String showStudentForm(Model theModel) {
 		Student theStudent = new Student();
-		Academic theAcademic=new Academic();
-		List<Grade> theGrades=gradeService.findAll();
+		Academic theAcademic = new Academic();
+		List<Grade> theGrades = gradeService.findAll();
 		theModel.addAttribute("student", theStudent);
 		theModel.addAttribute("academic", theAcademic);
 		theModel.addAttribute("gradeList", theGrades);
 		return "student-form";
 	}
 
-//	@PostMapping("/save-student")
-//	public String saveStudent(@Valid @ModelAttribute("student") Student theStudent, BindingResult theBindingResult,
-//			Model theModel) {
-//		logger.info("saving the student for- " + theStudent.getFullName());
-//		if (theBindingResult.hasErrors()) {
-//			List<FieldError> errors = theBindingResult.getFieldErrors();
-//			for (FieldError error : errors) {
-//				logger.warning(error.getField() + " - " + error.getDefaultMessage());
-//			}
-//			return "student-form";
-//		}
-//		try {
-//			// save the student
-//			studentService.save(theStudent);
-//			logger.info("student saved.");
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		// use a redirect to prevent duplicate submissions
-//		return "redirect:/students-list";
-//	}
-	
 	@PostMapping("/save-student")
 	public String saveStudent(@Valid @ModelAttribute("academic") Academic theAcademic, BindingResult theBindingResult,
 			Model theModel) {
 		logger.info("saving the student for- " + theAcademic);
-		
+
 		theAcademic.setIsActive(true);
 		theAcademic.setCategory(category.NEW);
-		
+
 		if (theBindingResult.hasErrors()) {
 			List<FieldError> errors = theBindingResult.getFieldErrors();
 			for (FieldError error : errors) {
@@ -120,7 +149,6 @@ public class SchoolController {
 		// use a redirect to prevent duplicate submissions
 		return "redirect:/students-list";
 	}
-
 
 	@GetMapping("/student")
 	public String showStudentPayments(@RequestParam("academic-id") int theAcademicId, Model theModel) {

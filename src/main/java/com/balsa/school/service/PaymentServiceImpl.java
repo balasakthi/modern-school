@@ -66,15 +66,18 @@ public class PaymentServiceImpl implements PaymentService {
 
 	}
 
-	@Override
-	public List<Payment> findByPayDate(Date date) {
-		return paymentRepository.findByPayDate(date);
-	}
 
 	@Override
 	public List<Payment> findByMaxPayDate() {
-		
 		return paymentRepository.findByMaxPayDate();
 	}
+
+	@Override
+	public Date getMaxPayDate() {
+		
+		return paymentRepository.getMaxPayDate();
+	}
+
+	
 
 }

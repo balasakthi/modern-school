@@ -1,9 +1,9 @@
 package com.balsa.school.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.balsa.school.entity.Academic;
-import com.balsa.school.entity.Student;
 
 public interface AcademicService {
 	
@@ -28,7 +28,13 @@ public interface AcademicService {
 	public List<Academic> findAll();
 
 	public Academic findById(int theAcademicId);
+	
+	
+	// method to get the student list based on payment dates
+	
+	public List<Academic> findByPayDate(Date thePayDate);
 
+	public List<Academic> findByMaxPayDate();
 	
 	// methods to get strength of Integrated XI grades
 

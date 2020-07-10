@@ -22,8 +22,9 @@ public interface PaymentService {
 
 	public Double sumAllPaidFee();
 	
-	public List<Payment> findByPayDate(Date date);
-	
 	public List<Payment> findByMaxPayDate();
+	
+	public Date getMaxPayDate();
+	
 
 }

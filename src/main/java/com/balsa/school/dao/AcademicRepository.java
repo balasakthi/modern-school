@@ -1,5 +1,6 @@
 package com.balsa.school.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,15 @@ public interface AcademicRepository extends JpaRepository<Academic, Integer> {
 	Integer countByIsActive(Boolean isActive);
 
 	List<Academic> findByGradeIn(List<String> grades);
+
+	// gets the student list based on pay date
+	@Query(value = "SELECT * FROM academic JOIN payment ON academic.id =payment.academic_id WHERE payment.pay_date = ?1", nativeQuery = true)
+	List<Academic> findByPayDate(Date thePayDate);
 	
+	// gets the student list based on max pay date
+	@Query(value = "SELECT * FROM academic JOIN payment ON academic.id =payment.academic_id WHERE payment.pay_date = (SELECT MAX(pay_date) FROM payment)", nativeQuery = true)
+	List<Academic> findByMaxPayDate();
+
 	@Query(value = "SELECT count(id) FROM academic WHERE category IN ('MATRIC')", nativeQuery = true)
 	Integer getTotalMatric();
 
@@ -38,34 +47,33 @@ public interface AcademicRepository extends JpaRepository<Academic, Integer> {
 	// Queries to get strength of a integrated higher secondary class
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (14)", nativeQuery = true)
 	Integer getTotalIntegratedA1();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (15)", nativeQuery = true)
 	Integer getTotalIntegratedB1();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (16)", nativeQuery = true)
 	Integer getTotalIntegratedB2();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (17)", nativeQuery = true)
 	Integer getTotalIntegratedC1();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (18)", nativeQuery = true)
 	Integer getTotalIntegratedC2();
-	
+
 	// Queries to get strength of a non integrated higher secondary class
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (19)", nativeQuery = true)
 	Integer getTotalNonIntegratedA1();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (20)", nativeQuery = true)
 	Integer getTotalNonIntegratedB1();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (21)", nativeQuery = true)
 	Integer getTotalNonIntegratedB2();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (22)", nativeQuery = true)
 	Integer getTotalNonIntegratedC1();
-	
+
 	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (23)", nativeQuery = true)
 	Integer getTotalNonIntegratedC2();
-	
 
 }

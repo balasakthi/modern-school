@@ -1,5 +1,6 @@
 package com.balsa.school.service;
 
+import java.util.Date;
 import java.util.List;
 
 import java.util.Optional;
@@ -143,6 +144,18 @@ public class AcademicServiceImpl implements AcademicService {
 	public void save(Academic theAcademic) {
 
 		academicRepository.save(theAcademic);
+	}
+
+	@Override
+	public List<Academic> findByPayDate(Date thePayDate) {
+		
+		return academicRepository.findByPayDate(thePayDate);
+	}
+
+	@Override
+	public List<Academic> findByMaxPayDate() {
+		
+		return academicRepository.findByMaxPayDate();
 	}
 
 }

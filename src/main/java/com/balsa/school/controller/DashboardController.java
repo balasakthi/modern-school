@@ -33,7 +33,7 @@ public class DashboardController {
 	}
 
 	// method to find the total new admission
-	private void findAcademicStrength() {
+	public void findAcademicStrength() {
 		admissionStrength = new AdmissionStrength();
 		admissionStrength.setTotalAdmission(academicService.getTotalNewAdmission());
 		admissionStrength.setTotalStudents(academicService.getTotalStudents());
@@ -46,7 +46,7 @@ public class DashboardController {
 	}
 
 	// method to find the higher secondary strength
-	private void findHigherSecondaryStrength() {
+	public void findHigherSecondaryStrength() {
 		higherSecondaryStrength = new HigherSecondaryStrength();
 		higherSecondaryStrength.setTotalIntegratedA1(academicService.getTotalIntegratedA1());
 		higherSecondaryStrength.setTotalIntegratedB1(academicService.getTotalIntegratedB1());
@@ -64,11 +64,11 @@ public class DashboardController {
 	@RequestMapping("/")
 	public String showDashboard(Model theModel) {
 
-		logger.info("showing dashboard");
+		// logger.info("showing dashboard");
 
 		// gets the total new admissions
 		findAcademicStrength();
-		
+
 		// gets the total higher secondary
 		findHigherSecondaryStrength();
 
@@ -78,7 +78,7 @@ public class DashboardController {
 
 		theModel.addAttribute("recentPayments", theRecentPayments);
 		theModel.addAttribute("admissionStrength", admissionStrength);
-		theModel.addAttribute("higherSecondary",higherSecondaryStrength);
+		theModel.addAttribute("higherSecondary", higherSecondaryStrength);
 		theModel.addAttribute("totalPaidFee", totalPaidFee);
 		theModel.addAttribute("todaysDate", LocalDateTime.now());
 
