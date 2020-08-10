@@ -1,258 +1,400 @@
 <!DOCTYPE html>
 
-
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script})">
-
+	th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script}, 'dashboard')">
 <head>
 <title>Dashboard</title>
-
-<!-- C3 charts css -->
-<link th:href="@{assets/plugins/c3/c3.min.css}" rel="stylesheet"
-	type="text/css" />
-
 </head>
 
-
-<body class="fixed-left">
-
+<body class="hold-transition sidebar-mini layout-navbar-fixed">
 	<section>
+		<div class="row">
+			<div class="col-lg-3 col-6">
+				<!-- small card -->
+				<div class="small-box bg-info">
+					<div class="inner">
+						<h2 th:text="${studentCount}"></h2>
+
+						<p>Students</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-user"></i>
+					</div>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small card -->
+				<div class="small-box bg-success">
+					<div class="inner">
+						<h2 th:text="${admissionCount}"></h2>
+
+						<p>New Admission</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-user-graduate"></i>
+					</div>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small card -->
+				<div class="small-box bg-warning">
+					<div class="inner">
+						<h2
+							th:text="${#numbers.formatDecimal(totalPaidFee,0,'COMMA',0,'POINT')}"></h2>
+
+						<p>Collection</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-rupee-sign"></i>
+					</div>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small card -->
+				<div class="small-box bg-danger">
+					<div class="inner">
+						<h2
+							th:text="${#temporals.format(todaysDate, 'dd MMMM', new java.util.Locale('ta', 'IN'))}"></h2>
+
+						<p>Today's Date</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-calendar-alt"></i>
+					</div>
+				</div>
+			</div>
+			<!-- ./col -->
+		</div>
+		<!-- /.row -->
 
 		<div class="row">
-			<div class="col-md-6 col-lg-6 col-xl-3">
-				<div class="mini-stat clearfix bg-primary">
-					<span class="mini-stat-icon"><i class="mdi mdi-account"></i></span>
-					<div class="mini-stat-info text-right text-white">
-						<span class="counter"
-							th:text="${admissionStrength.getTotalStudents()}"></span> Students
+			<div class="col-lg-6">
+				<div class="card">
+					<div class="card-header border-0">
+						<h3 class="card-title">New Admissions</h3>
+
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool"
+								data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="chart-responsive">
+							<canvas id="newAdmissionChart"
+								style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+						</div>
+						<!-- ./chart-responsive -->
 					</div>
 				</div>
+				<!-- /.card -->
 			</div>
-			<div class="col-md-6 col-lg-6 col-xl-3">
-				<div class="mini-stat clearfix bg-primary">
-					<span class="mini-stat-icon"><i class="mdi mdi-school"></i></span>
-					<div class="mini-stat-info text-right text-white">
-						<span class="counter"
-							th:text="${admissionStrength.getTotalAdmission()}+${admissionStrength.getTotalOldHigherSecondary()}"></span>
-						Admissions
+			<!-- /.col-md-6 -->
+
+			<div class="col-lg-6">
+				<div class="card">
+					<div class="card-header border-0">
+						<h3 class="card-title">Higher Secondary</h3>
+
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool"
+								data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+						</div>
 					</div>
+					<div class="card-body">
+						<div class="chart-responsive">
+							<canvas id="higherSecondaryChart"
+								style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+						</div>
+
+					</div>
+
+					<!-- /.card-footer -->
 				</div>
+				<!-- /.card -->
 			</div>
-			<div class="col-md-6 col-lg-6 col-xl-3">
-				<div class="mini-stat clearfix bg-primary">
-					<span class="mini-stat-icon"><i class="fa fa-rupee"></i></span>
-					<div class="mini-stat-info text-right text-white">
-						<span class="counter"
-							th:text="${#numbers.formatDecimal(totalPaidFee,0,'COMMA',0,'POINT')}"></span>
-						New Users
+			<!-- /.col-md-6 -->
+		</div>
+		<!-- /.row -->
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- BAR CHART -->
+				<div class="card card-success">
+					<div class="card-header">
+						<h3 class="card-title">Bar Chart</h3>
+
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool"
+								data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool"
+								data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
 					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-lg-6 col-xl-3">
-				<div class="mini-stat clearfix bg-primary">
-					<span class="mini-stat-icon"><i
-						class="mdi mdi-calendar-today"></i> </span>
-					<div class="mini-stat-info text-right text-white">
-						<span class="counter"
-							th:text="${#temporals.format(todaysDate, 'dd MMMM yyyy', new java.util.Locale('ta', 'IN'))}"></span>
-						Today's Date
+					<div class="card-body">
+						<div class="chart">
+							<canvas id="stackedBarChart"
+								style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+						</div>
 					</div>
+					<!-- /.card-body -->
 				</div>
+				<!-- /.card -->
 			</div>
 		</div>
 
-
 		<div class="row">
+			<!-- TABLE: LATEST PAYMENTS -->
+			<div class="col-lg-8">
+				<div class="card">
+					<div class="card-header border-transparent">
+						<h3 class="card-title">Recent Payments</h3>
 
-			<div class="col-xl-6">
-				<div class="card m-b-20">
-					<div class="card-body">
-						<h4 class="mt-0 header-title" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">New Admissions</h4>
-
-						<ul class="list-inline widget-chart m-t-20 text-center">
-							<li>
-								<h4 class="">
-									<b th:text="${admissionStrength.getTotalNewPrePrimary()}"></b>
-								</h4>
-								<p class="text-muted m-b-0">Pre Primary</p>
-							</li>
-							<li>
-								<h4 class="">
-									<b th:text="${admissionStrength.getTotalNewPrimary()}"></b>
-								</h4>
-								<p class="text-muted m-b-0">Primary</p>
-							</li>
-							<li>
-								<h4 class="">
-									<b th:text="${admissionStrength.getTotalNewSecondary()}"></b>
-								</h4>
-								<p class="text-muted m-b-0">Secondary</p>
-							</li>
-						</ul>
-						<div id="donut-chart"></div>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool"
+								data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool"
+								data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
 					</div>
-				</div>
-			</div>
-
-			<div class="col-xl-6">
-				<div class="card m-b-20">
-					<div class="card-body">
-						<h4 class="mt-0 header-title">Higher Secondary</h4>
-
-						<ul class="list-inline widget-chart m-t-20 text-center">
-							<li>
-								<h4 class="">
-									<b th:text="${admissionStrength.getTotalNewHigherSecondary()}"></b>
-								</h4>
-								<p class="text-muted m-b-0">Others</p>
-							</li>
-							<li>
-								<h4 class="">
-									<b th:text="${admissionStrength.getTotalOldHigherSecondary()}"></b>
-								</h4>
-								<p class="text-muted m-b-0">SMBM</p>
-							</li>
-						</ul>
-
-						<div id="chart"></div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-		<!-- end row -->
-
-
-		<div class="row">
-
-			<div class="col-12">
-				<div class="card m-b-20">
-					<div class="card-body">
-						<h4 class="mt-0 m-b-15 header-title">Recent Payments</h4>
+					<!-- /.card-header -->
+					<div class="card-body p-0">
 						<div class="table-responsive">
-							<table class="table table-hover m-b-0">
+							<table class="table m-0">
 								<thead>
 									<tr>
 										<th>Name</th>
 										<th>Amount</th>
 										<th>Bill No.</th>
 										<th>Pay date</th>
-
 									</tr>
-
 								</thead>
 								<tbody>
 									<tr th:each="tempPayment: ${recentPayments}">
-
 										<td><th:block
-												th:if="${tempPayment.academic.category.name()=='OLD'}">
+												th:if="${tempPayment.academic.category.name()=='PROMOTED'}">
 												<span th:text="${tempPayment.academic.student.fullName}">
 												</span>
-												
-											</th:block> <th:block th:if="${tempPayment.academic.category.name()== 'NEW'}">
+											</th:block> <th:block
+												th:if="${tempPayment.academic.category.name()== 'NEW'}">
 												<span th:text="${tempPayment.academic.student.fullName}"></span>
 												<div class="badge badge-pill badge-primary">New</div>
-											</th:block> <th:block th:if="${tempPayment.academic.category.name()=='MATRIC'}">
+											</th:block> <th:block
+												th:if="${tempPayment.academic.category.name()=='MATRIC'}">
 												<span th:text="${tempPayment.academic.student.fullName}"></span>
 												<div class="badge badge-pill badge-info">Matric</div>
 											</th:block></td>
 
-
-
 										<td>&#8377; <span
-											th:text="${#numbers.formatDecimal(tempPayment.amount,0, 'COMMA',0, 'POINT')}"></span></td>
+											th:text="${#numbers.formatDecimal(tempPayment.amount,0, 'COMMA',0, 'POINT')}"></span>
+										</td>
 
 										<td th:text="${tempPayment.billNo}"></td>
 
 										<td
 											th:text="${#dates.format(tempPayment.payDate, 'dd-MM-yyyy')}" />
-
-
 									</tr>
-
 								</tbody>
 							</table>
 						</div>
+						<!-- /.table-responsive -->
 					</div>
+					<!-- /.card-body -->
+					<div class="card-footer clearfix">
+						<a href="javascript:void(0)"
+							class="btn btn-sm btn-info float-left">New Payment</a> <a
+							href="javascript:void(0)"
+							class="btn btn-sm btn-secondary float-right">View All
+							Payments</a>
+					</div>
+					<!-- /.card-footer -->
 				</div>
 			</div>
+			<!-- /.card -->
 
+			<!-- NEW ADMISSION LIST -->
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Recent New Admissions</h3>
+
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool"
+								data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool"
+								data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body table-responsive p-0">
+						<table class="table table-valign-middle">
+							<tbody>
+								<tr th:each="tempAdmission: ${recentAdmissions}">
+									<td><img th:src="@{assets/dist/img/default-150x150.png}"
+										alt="Product 1" class="img-circle img-size-32 mr-2" /> <th:block
+											th:if="${tempAdmission.academic.category.name()== 'NEW'}">
+											<span th:text="${tempAdmission.academic.student.fullName}"></span>
+										</th:block> <th:block
+											th:if="${tempAdmission.academic.category.name()=='MATRIC'}">
+											<span th:text="${tempAdmission.academic.student.fullName}"></span>
+											<div class="badge badge-info">Matric</div>
+										</th:block></td>
+
+									<td><span class="text-muted"
+										th:text="${tempAdmission.academic.grade.title}"></span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.card-body -->
+					<div class="card-footer text-center">
+						<a href="javascript:void(0)" class="uppercase">View All
+							Admissions</a>
+					</div>
+					<!-- /.card-footer -->
+				</div>
+			</div>
+			<!-- /.card -->
 		</div>
-		<!-- end row -->
-
-		<div id="chart"></div>
-
-
-
-
-
 	</section>
 
-	<!--C3 Chart-->
-	<script type="text/javascript" th:src="@{assets/plugins/d3/d3.min.js}"></script>
-	<script type="text/javascript" th:src="@{assets/plugins/c3/c3.min.js}"></script>
-
+	<!-- OPTIONAL SCRIPTS -->
+	<script th:src="@{assets/plugins/chart.js/Chart.min.js}"></script>
 
 	<script th:inline="javascript">
-		/*<![CDATA[*/
-
-		var chart = c3
-				.generate({
-					bindto : '#donut-chart',
-					data : {
-						columns : [
-								[ 'Pre Primary', /*[[${admissionStrength.getTotalNewPrePrimary()}]]*/],
-								[ 'Primary', /*[[${admissionStrength.getTotalNewPrimary()}]]*/],
-								[ 'Secondary',/*[[${admissionStrength.getTotalNewSecondary()}]]*/],
-								[ 'Higher Secondary',/*[[${admissionStrength.getTotalNewHigherSecondary()}+${admissionStrength.getTotalOldHigherSecondary()}]]*/] ],
-						type : 'donut'
-					},
-					donut : {
-						title : "Students",
-						width : 30,
-						label : {
-							show : false
-						}
-					},
-					color : {
-						pattern : [ "#f1a1a1", "#ebeff2", "#e54749", "#eb7475" ]
-					}
-				});
+      		/*<![CDATA[*/
 
 
-		//generating chart 
-		var chart = c3
-				.generate({
-					bindto : '#chart',
-					data : {
-						columns : [
-								[ 'Integrated', /*[[${higherSecondary.getTotalIntegratedA1()}]]*/
-								, /*[[${higherSecondary.getTotalIntegratedB1()}]]*/
-								,/*[[${higherSecondary.getTotalIntegratedB2()}]]*/
-								,/*[[${higherSecondary.getTotalIntegratedC1()}]]*/
-								,/*[[${higherSecondary.getTotalIntegratedC2()}]]*/],
-								[ 'Non-Integrated', /*[[${higherSecondary.getTotalNonIntegratedA1()}]]*/
-								,/*[[${higherSecondary.getTotalNonIntegratedB1()}]]*/
-								,/*[[${higherSecondary.getTotalNonIntegratedB2()}]]*/
-								,/*[[${higherSecondary.getTotalNonIntegratedC1()}]]*/
-								,/*[[${higherSecondary.getTotalNonIntegratedC2()}]]*/] ]
-					},
-					color : {
-						pattern : [ "#e54749", "#f1a1a1", "#ebeff2", "#eb7475" ]
-					},
-					axis : {
-						x : {
-							type : 'category',
-							categories : [ 'XI A1', 'XI B1', 'XI B2', 'XI C1',
-									'XI C2' ]
-						}
-					}
-				});
+      			//-------------
+      	    //- LINE CHART -
+      	    //-------------
+
+      		var context= document.getElementById("higherSecondaryChart").getContext('2d');
+
+      		var higherSecondaryChart = new Chart(context, {
+          type: 'line',
+          data: {
+              labels: [[${higherIntegrated.keySet()}]],
+              datasets: [{
+                  label: 'Integrated', // Name the series
+                  data:  [[${higherIntegrated.values()}]], // Specify the data values array
+                  backgroundColor     : 'transparent',
+                  borderColor         : '#007bff',
+                  pointBorderColor    : '#007bff',
+                  pointBackgroundColor: '#007bff',
+                  fill                : false,
+              },{
+
+              	label: 'Non Integrated', // Name the series
+                  data:  [[${higherNonIntegrated.values()}]], // Specify the data values array
+                  backgroundColor     : 'tansparent',
+                  borderColor         : '#ced4da',
+                  pointBorderColor    : '#ced4da',
+                  pointBackgroundColor: '#ced4da',
+                  fill                : false
+
+              }]
+
+          },
+
+          options: {
+            responsive: true, // Instruct chart js to respond nicely.
+            maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+          }
+      });
+
+      		  //-------------
+      	    //- DONUT CHART -
+      	    //-------------
+      var context = document.getElementById("newAdmissionChart").getContext('2d');
+
+      		var newAdmissionChart = new Chart(context, {
+          type: 'doughnut',
+          data: {
+              labels: [[${newAdmissions.keySet()}]],
+              datasets: [{
+                  data:  [[${newAdmissions.values()}]], // Specify the data values array
+                  backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+              }]
+
+          },
+
+          options: {
+            responsive: true, // Instruct chart js to respond nicely.
+            maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+          }
+      });
 
 
-		/*]]>*/
-	</script>
+      		//-------------
+      	    //- BAR CHART -
+      	    //-------------
 
+      var context = document.getElementById("stackedBarChart").getContext('2d');
+
+      		var newAdmissionChart = new Chart(context, {
+          type: 'bar',
+          data: {
+          	labels  : [[${newAdmissionStrength.keySet()}]],
+              datasets: [
+                  {
+                    label               : 'New',
+                    backgroundColor     : 'rgba(60,141,188,0.9)',
+                    borderColor         : 'rgba(60,141,188,0.8)',
+                    pointRadius          : false,
+                    pointColor          : '#3b8bba',
+                    pointStrokeColor    : 'rgba(60,141,188,1)',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data                : [[${newAdmissionStrength.values()}]]
+                  },
+                  {
+                    label               : 'Promoted',
+                    backgroundColor     : 'rgba(210, 214, 222, 1)',
+                    borderColor         : 'rgba(210, 214, 222, 1)',
+                    pointRadius         : false,
+                    pointColor          : 'rgba(210, 214, 222, 1)',
+                    pointStrokeColor    : '#c1c7d1',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data                : [[${promotedGradeStrength.values()}]]
+                  },
+                ]
+          },
+
+          options: {
+            responsive: true, // Instruct chart js to respond nicely.
+            maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+            datasetFill: false,
+            scales: {
+                xAxes: [{
+                  stacked: true,
+                }],
+                yAxes: [{
+                  stacked: true
+                }]
+              }
+          }
+      });
+      		
+      	/*]]>*/
+    </script>
 </body>
-
 </html>

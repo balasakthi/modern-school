@@ -20,8 +20,12 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 	Double sumAllPaidFee();
 
 	// list the payments by the recent date
-	@Query(value = "SELECT * FROM payment WHERE pay_date = (SELECT MAX(pay_date) FROM payment)", nativeQuery = true)
+	@Query(value = "SELECT * FROM payment ORDER BY payment.pay_date DESC LIMIT 8", nativeQuery = true)
 	List<Payment> findByMaxPayDate();
+
+	// list the payments by recent admission
+	@Query(value = "SELECT * FROM payment JOIN academic ON payment.academic_id= academic.id WHERE category IN('NEW','MATRIC') ORDER BY payment.pay_date DESC LIMIT 8", nativeQuery = true)
+	List<Payment> findByRecentAdmission();
 
 	// list the payments by a student
 	List<Payment> findByAcademic(Academic theAcademic);

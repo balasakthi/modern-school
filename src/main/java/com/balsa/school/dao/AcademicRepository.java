@@ -4,76 +4,45 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.balsa.school.entity.Academic;
+import com.balsa.school.entity.Category;
 
-public interface AcademicRepository extends JpaRepository<Academic, Integer> {
-
-	Integer countByIsActive(Boolean isActive);
-
-	List<Academic> findByGradeIn(List<String> grades);
+public interface AcademicRepository extends JpaRepository<Academic, Integer>, JpaSpecificationExecutor<Academic> {
 
 	// gets the student list based on pay date
 	@Query(value = "SELECT * FROM academic JOIN payment ON academic.id =payment.academic_id WHERE payment.pay_date = ?1", nativeQuery = true)
 	List<Academic> findByPayDate(Date thePayDate);
-	
+
 	// gets the student list based on max pay date
 	@Query(value = "SELECT * FROM academic JOIN payment ON academic.id =payment.academic_id WHERE payment.pay_date = (SELECT MAX(pay_date) FROM payment)", nativeQuery = true)
 	List<Academic> findByMaxPayDate();
 
-	@Query(value = "SELECT count(id) FROM academic WHERE category IN ('MATRIC')", nativeQuery = true)
-	Integer getTotalMatric();
 
-	@Query(value = "SELECT count(id) FROM academic WHERE category IN ('NEW','MATRIC')", nativeQuery = true)
-	Integer getTotalNewAdmission();
+	Integer countByIsActive(Boolean isActive);
+	
+	Integer countByCategory(Category category);
+	
+	// Query to find the strength of the given grade
+	@Query(value = "SELECT count(id) FROM academic WHERE grade_id =:gradeId", nativeQuery = true)
+	Integer gradeStrength(@Param("gradeId") int gradeId);
+	
+	Integer countByGradeIdBetweenAndCategory(int gradeStart,int gradeEnd, Category category);
 
-	// Queries to get the total new admissions
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (1,2,3) and category IN ('NEW', 'MATRIC')", nativeQuery = true)
-	Integer getTotalNewPrePrimary();
+	Integer countByGradeIdAndCategory(int gradeId, Category category);
+	
+	// Query to find students based on category (new, matric, old)
+	List<Academic> findByCategory(Category category);
 
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 4 AND 8 and category IN ('NEW', 'MATRIC')", nativeQuery = true)
-	Integer getTotalNewPrimary();
+	// Queries to find the students based on name, grade
+	@Query(value = "SELECT * FROM academic a WHERE a.student_id IN (SELECT (id) FROM student s WHERE s.full_name LIKE UPPER(CONCAT('%',:fullName,'%')))", nativeQuery = true)
+	List<Academic> findByStudent(@Param("fullName") String fullName);
 
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 9 AND 13 and category IN ('NEW', 'MATRIC')", nativeQuery = true)
-	Integer getTotalNewSecondary();
+	@Query(value = "SELECT * FROM academic a WHERE a.student_id IN (SELECT (id) FROM student s WHERE s.full_name LIKE UPPER(CONCAT('%',:fullName,'%'))) AND a.grade_id IN (SELECT (id) FROM grade g WHERE g.id= :gradeId)", nativeQuery = true)
+	List<Academic> findByStudentAndGrade(@Param("fullName") String fullName, @Param("gradeId") int gradeId);
 
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 14 AND 23 and category IN ('NEW')", nativeQuery = true)
-	Integer getTotalNewHigherSecondary();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id BETWEEN 14 AND 23 and category IN ('OLD')", nativeQuery = true)
-	Integer getTotalOldHigherSecondary();
-
-	// Queries to get strength of a integrated higher secondary class
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (14)", nativeQuery = true)
-	Integer getTotalIntegratedA1();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (15)", nativeQuery = true)
-	Integer getTotalIntegratedB1();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (16)", nativeQuery = true)
-	Integer getTotalIntegratedB2();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (17)", nativeQuery = true)
-	Integer getTotalIntegratedC1();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (18)", nativeQuery = true)
-	Integer getTotalIntegratedC2();
-
-	// Queries to get strength of a non integrated higher secondary class
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (19)", nativeQuery = true)
-	Integer getTotalNonIntegratedA1();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (20)", nativeQuery = true)
-	Integer getTotalNonIntegratedB1();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (21)", nativeQuery = true)
-	Integer getTotalNonIntegratedB2();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (22)", nativeQuery = true)
-	Integer getTotalNonIntegratedC1();
-
-	@Query(value = "SELECT count(id) FROM academic WHERE grade_id IN (23)", nativeQuery = true)
-	Integer getTotalNonIntegratedC2();
 
 }

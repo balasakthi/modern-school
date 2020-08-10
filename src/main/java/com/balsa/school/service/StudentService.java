@@ -13,5 +13,7 @@ public interface StudentService {
 	public void save(Student theStudent);
 	
 	public void deleteById(int theStudentId);
+	
+	//public List<Student> findAll(StudentSpecification studentSpec);
 
 }

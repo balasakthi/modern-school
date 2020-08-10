@@ -70,7 +70,6 @@ public class GradeController {
 
 				logger.warning(error.getField() + " - " + error.getDefaultMessage());
 			}
-
 			return "grade-form";
 		}
 

@@ -3,62 +3,52 @@ package com.balsa.school.service;
 import java.util.Date;
 import java.util.List;
 
+import com.balsa.school.dao.specs.AcademicSpecification;
 import com.balsa.school.entity.Academic;
+import com.balsa.school.entity.Category;
+import com.balsa.school.entity.Grade;
+import com.balsa.school.entity.Student;
 
 public interface AcademicService {
-	
+
 	public void save(Academic theAcademic);
 
-	public Integer getTotalNewAdmission();
-
-	public Integer getTotalStudents();
-
-	public Integer getTotalMatric();
-
-	public Integer getTotalNewPrePrimary();
-
-	public Integer getTotalNewPrimary();
-
-	public Integer getTotalNewSecondary();
-
-	public Integer getTotalNewHigherSecondary();
-
-	public Integer getTotalOldHigherSecondary();
 
 	public List<Academic> findAll();
 
 	public Academic findById(int theAcademicId);
-	
+
 	
 	// method to get the student list based on payment dates
-	
+
 	public List<Academic> findByPayDate(Date thePayDate);
 
 	public List<Academic> findByMaxPayDate();
+
+	public List<Academic> findAll(AcademicSpecification academicSpecification);	
 	
-	// methods to get strength of Integrated XI grades
-
-	public Integer getTotalIntegratedA1();
-
-	public Integer getTotalIntegratedB1();
-
-	public Integer getTotalIntegratedB2();
-
-	public Integer getTotalIntegratedC1();
-
-	public Integer getTotalIntegratedC2();
-
+	public List<Academic> findByCriteria(String fullName, List<Integer> gradeId);
 	
-	// methods to get strength of Non Integrated XI grades
+	public List<Academic> findByCriteria(String fullName);
 	
-	public Integer getTotalNonIntegratedA1();
-
-	public Integer getTotalNonIntegratedB1();
-
-	public Integer getTotalNonIntegratedB2();
-
-	public Integer getTotalNonIntegratedC1();
-
-	public Integer getTotalNonIntegratedC2();
+	
+	
+	public Integer countByIsActive();
+	
+	public Integer countByCategory(Category category);
+	
+	public Integer gradeStrength(int gradeId);
+	
+	public Integer countByGradeIdBetweenAndCategory(int gradeStart, int gradeEnd, Category category);
+	
+	public Integer countByGradeIdAndCategory(int gradeId, Category category);
+	
+	public List<Academic> findByCategory(Category categoryTitle);	
+	
+	// Finding students
+	public List<Academic> findByStudentAndGrade(String fullName, int gradeId);
+	
+	public List<Academic> findByStudent(String fullName);
+	
 
 }

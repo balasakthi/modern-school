@@ -24,6 +24,8 @@ public interface PaymentService {
 	
 	public List<Payment> findByMaxPayDate();
 	
+	public List<Payment> findByRecentAdmission();
+	
 	public Date getMaxPayDate();
 	
 

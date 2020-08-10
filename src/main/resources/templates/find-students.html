@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script},'students')"
+>
+  <head>
+    <title>Students</title>
+
+    <!-- Select2 -->
+    <link
+      rel="stylesheet"
+      th:href="@{assets/plugins/select2/css/select2.min.css}"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}"
+    />
+  </head>
+
+  <body class="hold-transition sidebar-mini layout-navbar-fixed">
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="card card-default">
+          <div class="card-body">
+            <form
+              th:action="@{/students}"
+              th:object="${payment}"
+              class="form-inline"
+              method="GET"
+            >
+              <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inlineFormInputGroupUsername2"
+                  placeholder="Student Name"
+                  th:field="*{academic.student.fullName}"
+                />
+              </div>
+
+              <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group">
+                  <select
+                    class="select2"
+                    th:field="*{academic.grade}"
+                    data-placeholder="Select Grade"
+                    style="width: 100%;"
+                  >
+                  <option th:value="0" >Choose...</option>
+                     <option
+                      th:each="grade:${grade}"
+                      th:value="${grade.id}"
+                      th:text="${grade.title}"
+                    ></option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary mb-2">Search</button>
+             
+            </form>
+             
+          </div>
+        </div>
+        <!-- END card-->
+      </div>
+    </section>
+    <!-- /.content -->
+
+    <!-- Select2 -->
+    <script th:src="@{assets/plugins/select2/js/select2.full.min.js}"></script>
+
+    <!-- InputMask -->
+    <script th:src="@{assets/plugins/moment/moment.min.js}"></script>
+    <script
+      th:src="@{assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js}"
+    ></script>
+
+    <script>
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+
+        $("[data-mask]").inputmask();
+      });
+    </script>
+  </body>
+</html>

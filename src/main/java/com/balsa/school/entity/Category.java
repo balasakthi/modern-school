@@ -1,5 +1,5 @@
 package com.balsa.school.entity;
 
 public enum Category {
-	NEW, MATRIC, OLD, REFUND
+	NEW, MATRIC, PROMOTED, REFUND
 }

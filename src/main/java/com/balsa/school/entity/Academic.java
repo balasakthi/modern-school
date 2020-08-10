@@ -16,10 +16,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "academic")
+@TypeDef(
+	    name = "pgsql_enum",
+	    typeClass = PostgreSQLEnumType.class
+	)
 public class Academic {
 
 	@Id
@@ -29,6 +36,7 @@ public class Academic {
 
 	@Column(name = "category")
 	@Enumerated(EnumType.STRING)
+	@Type(type = "pgsql_enum")
 	private Category category;
 
 	@Column(name = "active")
@@ -46,7 +54,8 @@ public class Academic {
 	@OneToMany(mappedBy = "academic", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
 			CascadeType.REFRESH })
 	private List<Payment> payment;
-
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -94,6 +103,7 @@ public class Academic {
 	public void setPayment(List<Payment> payment) {
 		this.payment = payment;
 	}
+	
 
 	// Bi Directional relationship
 	public void add(Payment tempPayment) {

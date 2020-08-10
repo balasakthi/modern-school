@@ -3,114 +3,124 @@
 
 
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script})">
-
+	th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::section}, ~{::script},'students')">
 
 <head>
 
 <title>Students</title>
 
-
-<link></link>
+<!-- Select2 -->
+<link rel="stylesheet"
+	th:href="@{assets/plugins/select2/css/select2.min.css}" />
+<link rel="stylesheet"
+	th:href="@{assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}" />
 </head>
 
 
-<body>
+<body class="hold-transition sidebar-mini layout-navbar-fixed">
 
-	<section>
+	<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- jquery validation -->
+					<div class="card card-primary">
+						<div class="card-header">
+							<h3 class="card-title">
+								Student <small>Form</small>
+							</h3>
+						</div>
+						<!-- /.card-header -->
+						<!-- form start -->
+						<form role="form" th:action="@{/save-student}"
+							th:object="${academic}" method="POST">
 
-		<div class="row">
+							<div class="card-body">
 
-			<div class="col-lg-12">
-				<div class="card m-b-20">
-					<div class="card-body">
-
-						<h4 class="mt-0 header-title">Student</h4>
-
-						<form th:action="@{/save-student}" th:object="${academic}"
-							method="POST">
-							
-							
-							<div class="form-group">
-								<!-- Add hidden form field to handle update -->
-								<input type="hidden" th:field="*{id}" />
-							</div>
-
-							<div class="form-group row">
-								<label for="name-text-input" class="col-sm-2 col-form-label">Full
-									Name</label>
-								<div class="col-sm-10">
-									<input class="form-control" type="text"
-										placeholder="Enter the student name" id="name-text-input"
-										th:field="*{student.fullName}" required>
-
-									<div class="input-group text-danger"
-										th:if="${#fields.hasErrors('student.fullName')}"
-										th:errors="*{student.fullName}"></div>
+								<div class="form-group">
+									<!-- Add hidden form field to handle update -->
+									<input type="hidden" th:field="*{id}" />
 								</div>
-							</div>
-							
-							<div class="form-group row">
-								<label for="grade-select-input" class="col-sm-2 col-form-label">Grade</label>
-								<div class="col-sm-10">
-									<select th:field=*{grade} class="form-control" required>
-										<option value="">Choose...</option>
-										<option th:each="grade:${gradeList}" th:value="${grade.id}"
-											th:text="${grade.title}"></option>
-									</select>
 
-									<div class="input-group text-danger"
-										th:if="${#fields.hasErrors('grade')}"
-										th:errors="*{grade}"></div>
+								<div class="form-group">
+									<label for="name-text-input">Full Name</label> <input
+										type="text" oninput="this.value=this.value.toUpperCase();"
+										class="form-control" placeholder="Student Name"
+										th:field="*{student.fullName}">
 								</div>
-							</div>
-							
-							<div class="form-group row">
-                           <label class="col-md-2 col-form-label">Inline radios</label>
-                           <div class="col-md-10">
-                              <label class="c-radio">
-                                 <input id="inlineradio1" type="radio" name="i-radio" value="option1" checked>
-                                New Admission</label>
-                              <label class="c-radio">
-                                 <input id="inlineradio2" type="radio" name="i-radio" value="option2">
-                                 From Matric</label>
-                              <label class="c-radio">
-                                 <input id="inlineradio3" type="radio" name="i-radio" value="option3">
-                                 Old Student</label>
-                           </div>
-                        </div>
 
-
-							<div class="form-group">
-								<div>
-									<button type="submit"
-										class="btn btn-primary waves-effect waves-light">
-										Submit</button>
-									<a class="btn btn-secondary" th:href="@{/students-list}"
-										role="button">Cancel</a>
+								<div class="form-group">
+									<label for="grade-select-input">Grade</label>
+									<div class="input-group">
+										<select class="select2" th:field=*{grade} style="width: 100%;">
+											<option value="">Choose...</option>
+											<option th:each="grade:${gradeList}" th:value="${grade.id}"
+												th:text="${grade.title}"></option>
+										</select>
+									</div>
 								</div>
+
+								<!-- radio -->
+								<div class="form-group">
+									<div class="custom-control custom-radio">
+										<input class="custom-control-input" type="radio"
+											id="customRadio1" name="customRadio" value="NEW"
+											th:field=*{category}> <label for="customRadio1"
+											class="custom-control-label">New</label>
+									</div>
+									<div class="custom-control custom-radio">
+										<input class="custom-control-input" type="radio"
+											id="customRadio2" name="customRadio" value="MATRIC"
+											th:field=*{category}> <label for="customRadio2"
+											class="custom-control-label">Matric</label>
+									</div>
+									<div class="custom-control custom-radio">
+										<input class="custom-control-input" type="radio"
+											id="customRadio3" name="customRadio" value="PROMOTED"
+											th:field=*{category}> <label for="customRadio3"
+											class="custom-control-label">Promoted</label>
+									</div>
+								</div>
+
+
+							</div>
+							<!-- /.card-body -->
+							<div class="card-footer">
+								<button type="submit" class="btn btn-primary">Submit</button>
 							</div>
 						</form>
-
 					</div>
+					<!-- /.card -->
 				</div>
+				<!--/.col (left) -->
+				<!-- right column -->
+				<div class="col-md-6"></div>
+				<!--/.col (right) -->
 			</div>
-			<!-- end col -->
-
-
-
-
+			<!-- /.row -->
 		</div>
-		<!-- end row -->
-
+		<!-- /.container-fluid -->
 	</section>
-	<!-- Parsley js -->
-	<script type="text/javascript"
-		th:src="@{assets/plugins/parsleyjs/parsley.min.js}"></script>
+	<!-- /.content -->
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('form').parsley();
+
+	<!-- Select2 -->
+	<script th:src="@{assets/plugins/select2/js/select2.full.min.js}"></script>
+
+	<!-- InputMask -->
+	<script th:src="@{assets/plugins/moment/moment.min.js}"></script>
+	<script
+		th:src="@{assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js}"></script>
+
+
+	<script>
+		$(function() {
+			//Initialize Select2 Elements
+			$(".select2").select2();
+
+			$("[data-mask]").inputmask();
 		});
 	</script>
 
