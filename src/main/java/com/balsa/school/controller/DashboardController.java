@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.balsa.school.bean.ChartMap;
+import com.balsa.school.entity.Academic;
 import com.balsa.school.entity.Payment;
 import com.balsa.school.service.AcademicService;
 import com.balsa.school.service.PaymentService;
@@ -38,7 +39,7 @@ public class DashboardController {
 		totalPaidFee = paymentService.sumAllPaidFee();
 
 		List<Payment> theRecentPayments = paymentService.findByMaxPayDate();
-		List<Payment> theRecentAdmissions = paymentService.findByRecentAdmission();
+		List<Academic> theRecentAdmissions = academicService.findByRecentAdmissions();
 
 		theModel.addAttribute("recentPayments", theRecentPayments);
 		theModel.addAttribute("recentAdmissions", theRecentAdmissions);

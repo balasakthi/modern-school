@@ -31,16 +31,6 @@
               method="GET"
             >
             
-             <div class="input-group mb-2 mr-sm-2">
-                
-                <select class="select2" th:field=*{academic} style="width: 300px;">
-											<option value="">Choose...</option>
-											<option th:each="academic:${academic}"
-										th:value="${academic.id}"
-										th:text="${academic.student.fullName}"></option>
-										</select>
-              </div>
-            
               <div class="input-group mb-2 mr-sm-2">
                 <div class="input-group-prepend">
                   <div class="input-group-text">

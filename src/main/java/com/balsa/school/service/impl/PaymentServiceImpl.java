@@ -84,4 +84,10 @@ public class PaymentServiceImpl implements PaymentService {
 		return paymentRepository.findByRecentAdmission();
 	}
 
+	@Override
+	public List<Payment> findByPayDate(Date date) {
+		
+		return paymentRepository.findByPayDate(date);
+	}
+
 }

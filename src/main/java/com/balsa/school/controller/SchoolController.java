@@ -93,7 +93,7 @@ public class SchoolController {
 	}
 	
 	
-	@GetMapping("/student")
+	@GetMapping("/student-payment")
 	public String showStudentPayments(@RequestParam("academic-id") int theAcademicId, Model theModel) {
 		
 		Academic theAcademic = academicService.findById(theAcademicId);

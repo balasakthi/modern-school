@@ -33,5 +33,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 	// list the payments by the recent date
 	@Query(value = "(SELECT MAX(pay_date) FROM payment)", nativeQuery = true)
 	Date getMaxPayDate();
-
+	
+	List<Payment> findByPayDate(Date date);
 }

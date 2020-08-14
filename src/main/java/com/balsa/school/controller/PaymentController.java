@@ -40,53 +40,87 @@ public class PaymentController {
 		this.studentService = studentService;
 		this.gradeService = gradeService;
 	}
-	
+
 	@GetMapping("/payments-find")
 	public String initFindForm(Model theModel) {
-		
+
 		List<Academic> theAcademicList = academicService.findAll();
-		
+
 		List<Grade> theGrades = gradeService.findAll();
-		
+
 		theModel.addAttribute("grade", theGrades);
 		theModel.addAttribute("academic", theAcademicList);
 		theModel.addAttribute("payment", new Payment());
-		
+
 		return "find-payments";
 	}
 	
-	@GetMapping("/payments")
-	public String processFindForm(Payment thePayment, BindingResult theResult, Model theModel) {
-
-		logger.info("finding the payments : "+thePayment.getPayDate());
-		
-		List<Payment> thePayments;
-		
-		if(thePayment.getPayDate()!=null) {
-			thePayments=paymentService.findByMaxPayDate();
-		}
-		
-		thePayments=paymentService.findAll();
-
-		theModel.addAttribute("paymentsList", thePayments);
-
-		return "payments-list";
-	}
-
-	
 	@GetMapping("/payment-form")
 	public String showPaymentForm(Model theModel) {
-		
+
 		List<Academic> theAcademicList = academicService.findAll();
 
 		Payment thePayment = new Payment();
 
 		theModel.addAttribute("academic", theAcademicList);
 		theModel.addAttribute("payment", thePayment);
-		
+
+		return "payment-form";
+	}
+
+	@GetMapping("/payments")
+	public String processFindForm(Payment thePayment, BindingResult theResult, Model theModel) {
+
+		logger.info("finding the payments : " + thePayment.getPayDate());
+
+		List<Payment> thePayments;
+
+		if (thePayment.getPayDate() != null)
+			thePayments = paymentService.findByPayDate(thePayment.getPayDate());
+		else
+			thePayments = paymentService.findAll();
+
+		theModel.addAttribute("paymentsList", thePayments);
+
+		return "payments-list";
+	}
+
+	@GetMapping("/students-payment")
+	public String sudentPayment(@RequestParam("academic-id") int theAcademicId, Model theModel) {
+
+		Academic theAcademic = academicService.findById(theAcademicId);
+
+		Payment thePayment = new Payment();
+
+		theModel.addAttribute("academic", theAcademic);
+		theModel.addAttribute("payment", thePayment);
+
 		return "payment-form";
 	}
 	
+	
+	@GetMapping("/update-payment")
+	public String updatePayment(@RequestParam("payment-id") int thePaymentId, Model theModel) {
+		
+		List<Academic> theAcademicList = academicService.findAll();
+
+		Payment thePayment = paymentService.findById(thePaymentId);
+
+		theModel.addAttribute("payment", thePayment);
+		theModel.addAttribute("academic", theAcademicList);
+
+		return "payment-form";
+	}
+	
+	@GetMapping("/delete-payment")
+	public String deletePayment(@RequestParam("payment-id") int thePaymentId) {
+		
+
+		paymentService.deleteById(thePaymentId);
+
+		return "redirect:/payments-find";
+	}
+
 	@PostMapping("/save-payment")
 	public String savePayment(@Valid @ModelAttribute("payment") Payment thePayment, BindingResult theBindingResult,
 			Model theModel) {
@@ -116,36 +150,9 @@ public class PaymentController {
 			e.printStackTrace();
 		}
 		// use a redirect to prevent duplicate submissions
-		return "redirect:/student-list";
+		return "redirect:/payments-find";
 
 	}
-	
-	
-	@GetMapping("/payment-foddrm7")
-	public String showPaymendtForm(@RequestParam(value = "academic-id", required = false, defaultValue="0") int theAcademicId,
-			Model theModel) {
 
-		if (theAcademicId != 0) {
-
-			logger.info("showing the payment form");
-
-			Academic theAcademicById = academicService.findById(theAcademicId);
-
-			theModel.addAttribute("academic", theAcademicById);
-
-		} else {
-			List<Academic> theAcademicList = academicService.findAll();
-
-			theModel.addAttribute("academic", theAcademicList);
-		}
-
-		Payment thePayment = new Payment();
-
-		theModel.addAttribute("payment", thePayment);
-
-		return "payment-form";
-	}
-
-	
 
 }

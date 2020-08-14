@@ -50,18 +50,6 @@ public class AcademicServiceImpl implements AcademicService {
 		academicRepository.save(theAcademic);
 	}
 
-	@Override
-	public List<Academic> findByPayDate(Date thePayDate) {
-
-		return academicRepository.findByPayDate(thePayDate);
-	}
-
-	@Override
-	public List<Academic> findByMaxPayDate() {
-
-		return academicRepository.findByMaxPayDate();
-	}
-
 	
 
 	@Override
@@ -150,6 +138,12 @@ public class AcademicServiceImpl implements AcademicService {
 	public Integer countByGradeIdAndCategory(int gradeId, Category category) {
 		
 		return academicRepository.countByGradeIdAndCategory(gradeId, category);
+	}
+
+	@Override
+	public List<Academic> findByRecentAdmissions() {
+		
+		return academicRepository.findByRecentAdmission();
 	}
 
 

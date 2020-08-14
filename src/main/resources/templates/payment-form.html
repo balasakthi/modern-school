@@ -50,7 +50,6 @@
 									<label for="grade-select-input">Student</label>
 									<div class="input-group">
 										<select class="select2" th:field=*{academic} style="width: 100%;">
-											<option value="">Choose...</option>
 											<option th:each="academic:${academic}"
 										th:value="${academic.id}"
 										th:text="${academic.student.fullName}"></option>

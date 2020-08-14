@@ -19,11 +19,7 @@ public interface AcademicService {
 	public Academic findById(int theAcademicId);
 
 	
-	// method to get the student list based on payment dates
 
-	public List<Academic> findByPayDate(Date thePayDate);
-
-	public List<Academic> findByMaxPayDate();
 
 	public List<Academic> findAll(AcademicSpecification academicSpecification);	
 	
@@ -49,6 +45,8 @@ public interface AcademicService {
 	public List<Academic> findByStudentAndGrade(String fullName, int gradeId);
 	
 	public List<Academic> findByStudent(String fullName);
+	
+	public List<Academic> findByRecentAdmissions();
 	
 
 }
