@@ -89,7 +89,7 @@
                       <th>Bill No</th>
                       <th>Amount</th>
                       <th>Reference</th>
-                      <th>Actions</th>
+                    
                     </tr>
                   </thead>
 
@@ -111,22 +111,7 @@
 						
 						<td th:text="${tempPayment.reference}"></td>
 						
-						 <td>
-                       
-                        <a
-                          th:href="@{/students-payment(payment-id=${tempPayment.id})}"
-                          class="btn btn-info btn-sm"
-                          ><i class="fa fa-edit"></i
-                        >
-                        </a>
-                        <a
-                          th:href="@{/delete-payment(payment-id=${tempPayment.id})}"
-                          class="btn btn-danger btn-sm"
-                          ><i class="fa fa-trash-alt"></i
-                        >
-                        </a>
-                        
-                      </td>
+				
 						
                     
                     </tr>
